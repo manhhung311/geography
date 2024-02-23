@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "id": "DTLS",
+      "name": "Di tích lịch sử"
+    },
+    {
+      "id": "GD",
+      "name": "Giáo dục"
+    },
+    {
+      "id": "LH",
+      "name": "Lễ Hội"
+    },
+    {
+      "id": "LN",
+      "name": "Làng nghề"
+    },
+    {
+      "id": "VH",
+      "name": "Văn học"
+    },
+    {
+      "id": "AN",
+      "name": "Âm nhạc"
+    },
+    {
+      "id": "MT",
+      "name": "Mĩ thuật"
+    },
+    {
+      "id": "DL",
+      "name": "Du lịch"
+    },
+    {
+      "id": "KT",
+      "name": "Kinh tế"
+    },
+    {
+      "id": "CT",
+      "name": "Chính trị"
+    }
+  ]
+}

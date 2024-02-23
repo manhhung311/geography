@@ -9,19 +9,41 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.0",
+    "@ckeditor/ckeditor5-build-classic": "^41.1.0",
+    "@ckeditor/ckeditor5-react": "^6.2.0",
+    "@dnd-kit/core": "^6.1.0",
+    "@react-icons/all-files": "^4.1.0",
+    "axios": "^1.6.7",
+    "bcrypt": "^5.1.1",
+    "cookies-next": "^4.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "mapbox-gl": "^3.1.2",
+    "maplibre-gl": "^4.0.2",
+    "mongoose": "^8.1.3",
+    "next": "14.1.0",
+    "nodemailer": "^6.9.9",
+    "openai": "^4.28.0",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.1.0"
+    "react-icons": "^5.0.1",
+    "react-map-gl": "^7.1.7",
+    "react-slick": "^0.30.2",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-slick": "^0.23.13",
     "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.1.0"
+    "typescript": "^5"
   }
 }

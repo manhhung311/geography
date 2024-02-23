@@ -1,0 +1,60 @@
+{
+  "Nam_Dinh": {
+    "districts": [
+      {
+        "id":"GT",
+        "name": "Giao Thuy",
+        "latitude": 20.283061710778913,
+        "longitude": 106.44315733668542
+      },
+      {
+        "id":"HH",
+        "name": "Hai Hau",
+        "latitude": 20.201653300120345,
+        "longitude": 106.2952080138805
+      },
+      {
+        "id":"ML",
+        "name": "My Loc",
+        "latitude": 20.46201722551275,
+        "longitude": 106.12469719844975
+      },
+      {
+        "id":"NT",
+        "name": "Nam Truc",
+        "latitude": 20.33319098029606,
+        "longitude": 106.17795036295492
+      },
+      {
+        "id":"NH",
+        "name": "Nghia Hung",
+        "latitude": 20.217257853217195,
+        "longitude": 106.18427336640801
+      },
+      {
+        "id":"TN",
+        "name": "Truc Ninh",
+        "latitude": 20.31548743260344,
+        "longitude": 106.26986413823347
+      },
+      {
+        "id":"VB",
+        "name": "Vu Ban",
+        "latitude": 20.333527646908077,
+        "longitude": 106.07857353842383
+      },
+      {
+        "id":"XT",
+        "name": "Xuan Truong",
+        "latitude": 20.310672619430232,
+        "longitude": 106.36346345276783
+      },
+      {
+        "id":"YY",
+        "name": "Y Yen",
+        "latitude": 20.3198822246396,
+        "longitude":106.01756208440035
+      }
+    ]
+  }
+}

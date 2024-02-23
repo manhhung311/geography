@@ -10,12 +10,12 @@ import {
 } from "react-map-gl";
 import ReactMapGL from "react-map-gl";
 // Giả sử namDinhGeoJSON là biến chứa dữ liệu GeoJSON của tỉnh Nam Định
-import namDinhGeoJSON from "../../vn.json";
-import layerStyle from "../../layer.json";
-import textStyle from "../../text-layer.json";
+import namDinhGeoJSON from "../vn.json";
+import layerStyle from "../layer.json";
+import textStyle from "../text-layer.json";
 import type { FeatureCollection } from "geojson";
 
-const NamDinhMap: React.FC = () => {
+export function CustomMap() {
   const [viewState, setViewState] = useState<ViewState>({
     pitch: 0,
     bearing: 0,
@@ -40,7 +40,7 @@ const NamDinhMap: React.FC = () => {
   };
 
   return (
-    <div className=" w-screen h-screen">
+    <div className=" w-full h-full">
       <Map
         {...viewState}
         mapStyle="mapbox://styles/mapbox/streets-v11"
@@ -59,5 +59,3 @@ const NamDinhMap: React.FC = () => {
     </div>
   );
 };
-
-export default NamDinhMap;

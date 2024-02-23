@@ -1,0 +1,13 @@
+{
+    "id": "text-layer",
+    "type": "symbol",
+    "source": "geojson",
+    "layout": {
+      "text-field": ["get", "name"],
+      "text-size": 16,
+      "text-anchor": "top"
+    },
+    "paint": {
+      "text-color": "#000000"
+    }
+  }
