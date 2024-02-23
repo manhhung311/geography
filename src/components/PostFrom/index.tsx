@@ -1,15 +1,19 @@
 "use client";
-import { FrownOutlined, MehOutlined, SmileOutlined } from "@ant-design/icons";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+// import { CKEditor } from "@ckeditor/ckeditor5-react";
 import type { UploadFile } from "antd";
 import { Button, Form, Input, Modal, Select } from "antd";
-import { useEffect, useState } from "react";
-import UploadImage from "../uploadImage";
-import LocationPicker, { Location } from "../LocationPicker";
+import { useEffect, useRef, useState } from "react";
 import ND from "../../ND.json";
 import Category from "../../category.json";
-type FileType = UploadFile;
+import LocationPicker, { Location } from "../LocationPicker";
+import UploadImage from "../uploadImage";
+// import dynamic from "next/dynamic";
+// type FileType = UploadFile;
+// const CKEditor = dynamic(
+//   () => import("@ckeditor/ckeditor5-react").then((mod) => mod.CKEditor),
+//   { ssr: false } // This line is important. It disables server-side rendering for CKEditor.
+// );
 export default function PostForm({
   post,
   close,
@@ -27,6 +31,18 @@ export default function PostForm({
   const [representativeImage, setRepresentativeImage] = useState<UploadFile[]>(
     []
   );
+
+  const editorRef: any = useRef(null);
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  const { CKEditor, ClassicEditor } = editorRef.current || {};
+
+  useEffect(() => {
+    editorRef.current = {
+      CKEditor: require("@ckeditor/ckeditor5-react").CKEditor,
+      ClassicEditor: require("@ckeditor/ckeditor5-build-classic"),
+    };
+    setEditorLoaded(true);
+  }, []);
 
   const [selectCategory, setSelectCategory] = useState<String>();
   const [selectField, setSelectField] = useState<String>("");
@@ -125,6 +141,11 @@ export default function PostForm({
       ),
     };
   });
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(typeof window !== "undefined");
+  }, []);
   return (
     <Form className="p-4" form={feedbackForm} onFinish={handleSubmitForm}>
       <div className="grid gap-2">
@@ -194,11 +215,13 @@ export default function PostForm({
       </div>
       <div className="grid gap-2">
         <Subtitle title={"Nội Dung"} required />
-        <CKEditor
-          data={post?.content || ""}
-          editor={ClassicEditor}
-          onChange={handleEditorChange}
-        />
+        {isClient && (
+          <CKEditor
+            data={post?.content || ""}
+            editor={ClassicEditor}
+            onChange={handleEditorChange}
+          />
+        )}
       </div>
       <div className="grid grid-cols-2 gap-2 mt-2">
         <Button disabled={loading} onClick={close}>
