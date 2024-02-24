@@ -57,7 +57,7 @@ export default function DataBoard({ menu }: { menu: number }) {
       }),
     });
     const res = await response.json();
-    if (res.message == "OK") {
+    if (res.message === "OK") {
       setListPost(
         listPost.map((item) => {
           if (item._id === id) {
@@ -213,7 +213,7 @@ export default function DataBoard({ menu }: { menu: number }) {
       ]);
       getUser();
     }
-  }, [menu, role]);
+  }, [menu, role, listPost, listUser]);
 
   return (
     <div>
