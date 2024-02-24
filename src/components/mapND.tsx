@@ -69,7 +69,7 @@ const NamDinhMap = ({
           >
             <Pin
               size={40}
-              image={`/uploads/${landmark.image}`}
+              image={`/files/${landmark.image}`}
               id={landmark.id}
             />
           </Marker>

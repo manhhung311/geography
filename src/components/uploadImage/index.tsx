@@ -3,7 +3,6 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Upload } from "antd";
 import type { UploadFile, UploadProps } from "antd";
 import { v4 as uuidv4 } from 'uuid';
-
 type FileType = UploadFile;
 
 const getBase64 = (file: FileType): Promise<string> =>
@@ -41,8 +40,9 @@ const UploadImage = ({
     );
   };
 
-  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
+  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>{
     setFileList(newFileList);
+  } 
 
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
@@ -63,33 +63,46 @@ const UploadImage = ({
             uid: item,
             name: item,
             status: "done",
-            url: `${process.env.NEXT_PUBLIC_HOST}/uploads/${item}`,
+            url: `${process.env.NEXT_PUBLIC_HOST}/files/${item}`,
           };
         })
       );
   }, [media]);
 
-  const getExtension = (filename: any) => {
-    // Hàm này trích xuất phần mở rộng của file dựa trên MIME type hoặc tên file
-    const dotIndex = filename.lastIndexOf(".");
-    if (dotIndex === -1) return ""; // Không có phần mở rộng
-    return filename.substring(dotIndex);
-  };
+  const CustomUpload = async (options: any) => {
+    const { file } = options;
+    const formData = new FormData();
+    const fileNameWithUUID = uuidv4(); // Sinh ra UUID
 
-  const beforeUpload = (file: any) => {
-    const isImageOrVideo =
-      file.type.startsWith("image/") || file.type.startsWith("video/");
-    if (!isImageOrVideo) {
-      return Upload.LIST_IGNORE;
+    // Tạo tên file mới kết hợp UUID và phần mở rộng file gốc
+    const newFileName = `${fileNameWithUUID}.${file.name.split(".").pop()}`;
+
+    // Thêm file vào FormData với tên file mới
+    formData.append("file", new File([file], newFileName, { type: file.type }));
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        console.log("Upload success");
+        setFileList([...fileList, {
+          uid: newFileName,
+          name: newFileName,
+          status: "done",
+          url: `${process.env.NEXT_PUBLIC_HOST}/files/${newFileName}`,
+        }])
+        // Xử lý thêm sau khi upload thành công nếu cần
+      } else {
+        console.error("Upload failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
-
-    // Tạo tên file mới với chuỗi ngẫu nhiên và giữ nguyên phần mở rộng
-    const extension = getExtension(file.name);
-    const randomName = `${uuidv4()}${extension}`;
-    file = new File([file], randomName, { type: file.type });
-
-    return true;
   };
+
   return (
     <>
       <Upload
@@ -97,8 +110,7 @@ const UploadImage = ({
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}
-        onChange={handleChange}
-        beforeUpload={beforeUpload}
+        customRequest={CustomUpload}
       >
         {!limitUpload || (limitUpload && fileList.length < limitUpload)
           ? uploadButton

@@ -23,7 +23,7 @@ const Cards = ({ post, select }: { post?: Post; select: (id: number) => void }) 
                   key={index}
                   autoPlay={true}
                   className=" w-1/3 h-full object-cover"
-                  src={`/uploads/${item}`}
+                  src={`/files/${item}`}
                   onClick={()=>{select(index)}}
                 />
               );
@@ -37,7 +37,7 @@ const Cards = ({ post, select }: { post?: Post; select: (id: number) => void }) 
                 <img
                   key={index}
                   className=" w-1/3 h-full object-cover"
-                  src={`/uploads/${item}`}
+                  src={`/files/${item}`}
                   onClick={()=>{select(index)}}
                 />
               );

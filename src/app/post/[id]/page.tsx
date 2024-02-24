@@ -134,7 +134,7 @@ export default function Post({ params }: { params: { id: string } }) {
                         width={1000}
                         height={1000}
                         alt={""}
-                        src={`/uploads/${item}`}
+                        src={`/files/${item}`}
                         className="h-full object-contain object-center mx-auto"
                       />
                     )}
@@ -145,7 +145,7 @@ export default function Post({ params }: { params: { id: string } }) {
                         <video
                           autoPlay={true}
                           className="h-full w-1/3 object-cover"
-                          src={`/uploads/${item}`}
+                          src={`/files/${item}`}
                           controls
                         />
                       </div>
