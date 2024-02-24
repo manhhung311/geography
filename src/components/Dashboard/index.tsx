@@ -113,7 +113,7 @@ export default function DataBoard({ menu }: { menu: number }) {
           title: "Tiêu Đề",
           dataIndex: "title",
           key: "title",
-          render: (text) => <a>{text}</a>,
+          render: (text, record) => <a href={`${process.env.NEXT_PUBLIC_HOST}/post/${record._id}`}>{text}</a>,
         },
         {
           title: "Danh Mục",
@@ -213,7 +213,7 @@ export default function DataBoard({ menu }: { menu: number }) {
       ]);
       getUser();
     }
-  }, [menu]);
+  }, [menu, role]);
 
   return (
     <div>

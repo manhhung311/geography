@@ -6,7 +6,7 @@ import {
   UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Avatar, Dropdown, Menu } from "antd";
+import { Avatar, Dropdown, Menu, Tooltip } from "antd";
 import { getCookie, setCookie } from "cookies-next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -53,13 +53,16 @@ export default function Home() {
         <div className=" w-screen h-screen overflow-hidden bg-white text-black">
           <div className="w-full flex justify-between h-">
             <div className=" w-2/12 flex justify-center items-center">
+            <Tooltip placement="top" title={"Về Trang Chủ"}>
               <Image
                 src={"/logo.webp"}
                 width={500}
                 height={500}
-                className=" h-16 object-cover"
+                className=" h-16 object-cover cursor-pointer"
                 alt="logo"
+                onClick={()=> router.push('/')}
               />
+              </Tooltip>
             </div>
             <div className=" h-full p-5">
               <Dropdown overlay={userMenu} trigger={["click"]}>
