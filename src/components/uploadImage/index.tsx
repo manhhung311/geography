@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Upload } from "antd";
 import type { UploadFile, UploadProps } from "antd";
+import { v4 as uuidv4 } from 'uuid';
 
 type FileType = UploadFile;
 
@@ -67,6 +68,28 @@ const UploadImage = ({
         })
       );
   }, [media]);
+
+  const getExtension = (filename: any) => {
+    // Hàm này trích xuất phần mở rộng của file dựa trên MIME type hoặc tên file
+    const dotIndex = filename.lastIndexOf(".");
+    if (dotIndex === -1) return ""; // Không có phần mở rộng
+    return filename.substring(dotIndex);
+  };
+
+  const beforeUpload = (file: any) => {
+    const isImageOrVideo =
+      file.type.startsWith("image/") || file.type.startsWith("video/");
+    if (!isImageOrVideo) {
+      return Upload.LIST_IGNORE;
+    }
+
+    // Tạo tên file mới với chuỗi ngẫu nhiên và giữ nguyên phần mở rộng
+    const extension = getExtension(file.name);
+    const randomName = `${uuidv4()}${extension}`;
+    file = new File([file], randomName, { type: file.type });
+
+    return true;
+  };
   return (
     <>
       <Upload
@@ -75,8 +98,11 @@ const UploadImage = ({
         fileList={fileList}
         onPreview={handlePreview}
         onChange={handleChange}
+        beforeUpload={beforeUpload}
       >
-        {!limitUpload || (limitUpload && fileList.length < limitUpload) ? uploadButton : ""}
+        {!limitUpload || (limitUpload && fileList.length < limitUpload)
+          ? uploadButton
+          : ""}
       </Upload>
       <Modal
         open={previewOpen}

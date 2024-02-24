@@ -174,7 +174,7 @@ export default function DataBoard({ menu }: { menu: number }) {
           ),
         },
       ]);
-      getPost();
+      if(!listPost|| listPost.length === 0)getPost();
     }
     if (menu === 1) {
       setColumns([
@@ -215,7 +215,7 @@ export default function DataBoard({ menu }: { menu: number }) {
           ),
         },
       ]);
-      getUser();
+      if(!listUser || listUser.length === 0)getUser();
     }
   }, [menu, role, listPost, listUser]);
 
