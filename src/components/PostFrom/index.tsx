@@ -17,9 +17,11 @@ import UploadImage from "../uploadImage";
 export default function PostForm({
   post,
   close,
+  updatePost
 }: {
   post?: any;
   close: () => void;
+  updatePost: (p: any)=> void
 }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -79,11 +81,24 @@ export default function PostForm({
           }),
         }
       );
-
       if (!response.ok) {
         console.error("Upload failed");
       } else {
         const result = await response.json();
+        updatePost({
+          title,
+            content,
+            category: selectCategory,
+            location: {
+              name: location,
+              latitude: locationGeo?.lat,
+              longitude: locationGeo?.lon,
+              image: representativeImage[0].name,
+            },
+            district: selectField,
+            files: files.map((item) => item.name),
+            exercise: exercise,
+        })
         close();
       }
     } catch (error) {

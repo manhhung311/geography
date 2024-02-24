@@ -113,7 +113,11 @@ export default function DataBoard({ menu }: { menu: number }) {
           title: "Tiêu Đề",
           dataIndex: "title",
           key: "title",
-          render: (text, record) => <a href={`${process.env.NEXT_PUBLIC_HOST}/post/${record._id}`}>{text}</a>,
+          render: (text, record) => (
+            <a href={`${process.env.NEXT_PUBLIC_HOST}/post/${record._id}`}>
+              {text}
+            </a>
+          ),
         },
         {
           title: "Danh Mục",
@@ -257,10 +261,14 @@ export default function DataBoard({ menu }: { menu: number }) {
       >
         <div className=" flex justify-center items-center overflow-auto">
           {menu === 0 && (
-            <PostForm post={post} close={() => {
-              setOpenModal(false)
-              getPost();
-            }} />
+            <PostForm
+              post={post}
+              close={() => {
+                setOpenModal(false);
+                getPost();
+              }}
+              updatePost={(p) => setPost(p)}
+            />
           )}
         </div>
       </Modal>
