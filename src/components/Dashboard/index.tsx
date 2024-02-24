@@ -1,15 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Space, Table, Tag, Button, Modal } from "antd";
-import type { TableProps } from "antd";
-import {
-  EditTwoTone,
-  DeleteTwoTone,
-  CheckSquareTwoTone,
-} from "@ant-design/icons";
-import PostForm from "../PostFrom";
 import { Post } from "@/app/post/[id]/page";
+import {
+  CheckSquareTwoTone,
+  DeleteTwoTone,
+  EditTwoTone,
+} from "@ant-design/icons";
+import type { TableProps } from "antd";
+import { Button, Modal, Space, Table, Tag } from "antd";
+import { useEffect, useState } from "react";
 import Category from "../../category.json";
+import PostForm from "../PostFrom";
+import { getCookie } from "cookies-next";
 interface DataType {
   key: string;
   name: string;
@@ -24,6 +25,7 @@ export default function DataBoard({ menu }: { menu: number }) {
   const [post, setPost] = useState<Post>();
   const [listPost, setListPost] = useState<Array<DataType>>([]);
   const [listUser, setListUser] = useState<Array<DataType>>([]);
+  const [role, setRole] = useState<string>("");
   const getPost = async () => {
     const api = await fetch("/api/post", {
       method: "GET",
@@ -31,6 +33,15 @@ export default function DataBoard({ menu }: { menu: number }) {
     });
     const res = await api.json();
     setListPost(res);
+  };
+
+  const getUser = async () => {
+    const api = await fetch("/api/user", {
+      method: "GET",
+      credentials: "include",
+    });
+    const res = await api.json();
+    setListUser(res);
   };
 
   const activatePost = async (id: string) => {
@@ -46,7 +57,19 @@ export default function DataBoard({ menu }: { menu: number }) {
       }),
     });
     const res = await response.json();
-    console.log(res);
+    if (res.message == "OK") {
+      setListPost(
+        listPost.map((item) => {
+          if (item._id === id) {
+            return {
+              ...item,
+              activated: true,
+            };
+          }
+          return item;
+        })
+      );
+    }
   };
 
   const handelEditPost = async (data: any) => {
@@ -54,7 +77,7 @@ export default function DataBoard({ menu }: { menu: number }) {
     setOpenModal(true);
   };
 
-  const handelDelete = async (id: string)=> {
+  const handelDelete = async (id: string) => {
     const response = await fetch(`/api/post/${id}`, {
       method: "DELETE",
       headers: {
@@ -63,10 +86,27 @@ export default function DataBoard({ menu }: { menu: number }) {
       credentials: "include",
     });
     const res = await response.json();
-    console.log(res);
-  }
+    if (res.message == "OK") {
+      setListPost(listPost.filter((item) => item._id !== id));
+    }
+  };
+
+  const deleteUser = async (id: string) => {
+    const response = await fetch(`/api/user/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const res = await response.json();
+    if (res.message == "OK") {
+      setListUser(listUser.filter((item) => item._id !== id));
+    }
+  };
 
   useEffect(() => {
+    setRole(getCookie("role") || "");
     if (menu === 0) {
       setColumns([
         {
@@ -116,8 +156,10 @@ export default function DataBoard({ menu }: { menu: number }) {
           render: (_, record) => (
             <Space size="middle">
               <EditTwoTone onClick={() => handelEditPost(record)} />
-              <DeleteTwoTone onClick={()=> handelDelete(record._id)}/>
-              {!record.activated && (
+              {role === "admin" && (
+                <DeleteTwoTone onClick={() => handelDelete(record._id)} />
+              )}
+              {!record.activated && role === "admin" && (
                 <CheckSquareTwoTone
                   onClick={() => {
                     activatePost(record._id);
@@ -130,7 +172,7 @@ export default function DataBoard({ menu }: { menu: number }) {
       ]);
       getPost();
     }
-    if (menu === 1)
+    if (menu === 1) {
       setColumns([
         {
           title: "Tên",
@@ -141,7 +183,7 @@ export default function DataBoard({ menu }: { menu: number }) {
         {
           title: "Email",
           dataIndex: "email",
-          key: "age",
+          key: "email",
         },
         {
           title: "Trạng Thái",
@@ -162,11 +204,15 @@ export default function DataBoard({ menu }: { menu: number }) {
           key: "action",
           render: (_, record) => (
             <Space size="middle">
-              <DeleteTwoTone />
+              {role === "admin" && (
+                <DeleteTwoTone onClick={() => deleteUser(record._id)} />
+              )}
             </Space>
           ),
         },
       ]);
+      getUser();
+    }
   }, [menu]);
 
   return (
@@ -211,7 +257,10 @@ export default function DataBoard({ menu }: { menu: number }) {
       >
         <div className=" flex justify-center items-center overflow-auto">
           {menu === 0 && (
-            <PostForm post={post} close={() => setOpenModal(false)} />
+            <PostForm post={post} close={() => {
+              setOpenModal(false)
+              getPost();
+            }} />
           )}
         </div>
       </Modal>

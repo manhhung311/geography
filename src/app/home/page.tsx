@@ -4,26 +4,40 @@ import ChatBox from "@/components/chatBox";
 import CustomMapND from "@/components/mapND";
 import { useState } from "react";
 import { Post } from "../post/[id]/page";
+import NamDinh from "../../ND.json";
 
 export default function Home() {
   const [post, setPost] = useState<Post[]>([]);
-  const handelChange = async (select: string, field: string)=> {
+  const [latitude, setLatitude] = useState<number>();
+  const [longitude, setLongitude] = useState<number>();
+  const handelChange = async (select: string, field: string) => {
+    console.log(select, field);
     const api = await fetch(`/api/post?select=${select}&field=${field}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: 'include'
+      credentials: "include",
     });
     const res = await api.json();
     setPost(res);
-    console.log(res)
-  }
+    const location = NamDinh.Nam_Dinh.districts.find(
+      (item) => item.id === select
+    );
+    if (location) {
+      setLatitude(
+       location.latitude
+      );
+      setLongitude(
+        location.longitude
+      );
+    }
+  };
   return (
     <div className=" flex w-screen h-screen">
-      <SideBar onChange={handelChange}/>
+      <SideBar onChange={handelChange} />
       <div className=" w-full h-full">
-        <CustomMapND post={post} />
+        <CustomMapND post={post} longitude={longitude} latitude={latitude} />
       </div>
       <ChatBox />
     </div>

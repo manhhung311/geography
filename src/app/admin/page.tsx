@@ -15,18 +15,21 @@ import { HiUsers } from "react-icons/hi2";
 import { useRouter } from "next/navigation";
 export default function Home() {
   const [login, setLogin] = useState<boolean>(true);
+  const [email, setEmail] = useState<string>("");
   const router = useRouter();
   useEffect(() => {
     const cookie = getCookie("token");
-    if (cookie && cookie.toString() !== "") setLogin(true);
-    else setLogin(false);
+    if (cookie && cookie.toString() !== "") {
+      setLogin(true);
+      setEmail(getCookie("email") || "");
+    } else setLogin(false);
   }, []);
   const userMenu = (
     <Menu>
-      <Menu.Item key="0">
+      {/* <Menu.Item key="0">
         <UserOutlined />
         <span>Thông tin cá nhân</span>
-      </Menu.Item>
+      </Menu.Item> */}
       <Menu.Divider />
       <Menu.Item
         key="1"
@@ -34,7 +37,7 @@ export default function Home() {
           setCookie("token", "");
           setCookie("role", "");
           setCookie("email", "");
-          router.push("/admin");
+          router.push("/admin/login");
         }}
       >
         <LogoutOutlined />
@@ -65,7 +68,7 @@ export default function Home() {
                     // style={{ backgroundColor: "#87d068" }}
                     icon={<UserOutlined />}
                   />
-                  <span> {getCookie("email")} </span> <DownOutlined />
+                  <span> {email} </span> <DownOutlined />
                 </div>
               </Dropdown>
             </div>
@@ -75,12 +78,18 @@ export default function Home() {
               <div
                 className={`${
                   menu === 0 ? " bg-zinc-400" : ""
-                } flex gap-2 p-4 justify-start`}
+                } flex gap-2 p-4 justify-start cursor-pointer`}
+                onClick={() => setMenu(0)}
               >
                 <UnorderedListOutlined />
                 <span>Bài Viết</span>
               </div>
-              <div className=" flex gap-2 justify-start p-4 items-center">
+              <div
+                className={`${
+                  menu === 1 ? " bg-zinc-400" : ""
+                } flex gap-2 p-4 justify-start cursor-pointer`}
+                onClick={() => setMenu(1)}
+              >
                 <HiUsers />
                 <span>Tài Khoản</span>
               </div>

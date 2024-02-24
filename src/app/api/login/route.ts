@@ -21,12 +21,9 @@ export async function POST(req: Request) {
   await connectDB();
   const body = await req.json();
   const { email, password } = body as any;
-  console.log({ email, password })
   const user = await AccountModel.findOne({ email: email });
-  console.log(user)
   if (user && user.activated) {
     const comparePassword = await bcrypt.compare(password, user.password);
-    console.log("comparePassword", comparePassword)
     if (comparePassword) {
       const token = await jwt.sign(
         { email: user.email, role: user.role },
@@ -35,11 +32,11 @@ export async function POST(req: Request) {
           algorithm: "RS256",
         }
       );
-      return NextResponse.json({ token: token }, { status: 200 });
+      return NextResponse.json({ token: token, statusCode: 200 }, { status: 200 });
     }
   }
   return NextResponse.json(
-    { message: "Tài Khoản Hoặc Mật Khẩu Không Đúng" },
+    { message: "Tài Khoản Hoặc Mật Khẩu Không Đúng", statusCode: 404 },
     { status: 404 }
   );
 }

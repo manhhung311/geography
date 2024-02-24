@@ -20,7 +20,7 @@ const NamDinhMap = ({
     height: 400,
     latitude: latitude || 20.4388, // Vĩ độ trung tâm của Nam Định
     longitude: longitude || 106.1621, // Kinh độ trung tâm của Nam Định
-    zoom: 11,
+    zoom: 13,
   });
 
   const [landmarks, setLandmarks] = useState<any[]>();
@@ -40,6 +40,16 @@ const NamDinhMap = ({
       );
     }
   }, [post]);
+
+  useEffect(() => {
+    setViewport({
+      width: "100%",
+      height: 400,
+      latitude: latitude || 20.4388, // Vĩ độ trung tâm của Nam Định
+      longitude: longitude || 106.1621, // Kinh độ trung tâm của Nam Định
+      zoom: 11,
+    });
+  }, [longitude, latitude]);
 
   return (
     <div className="flex w-full h-full overflow-hidden">

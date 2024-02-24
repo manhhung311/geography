@@ -84,7 +84,7 @@ export default function PostForm({
         console.error("Upload failed");
       } else {
         const result = await response.json();
-        console.log(result);
+        close();
       }
     } catch (error) {
       console.error(error);

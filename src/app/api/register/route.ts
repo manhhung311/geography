@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     name,
     key: salt,
   });
-  sendMail(email, `${process.env.HOST as string}/api/register/${salt}`);
+  sendMail(email, `${process.env.HOST as string}/api/activated/${encodeURI(salt)}`);
   return NextResponse.json({ message: "OK" });
 }
 
@@ -61,13 +61,14 @@ const sendMail = async (email: string, link: string) => {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     auth: {
-      user: 'vansang1532000@gmail.com',
-      pass: 'qtpvaimzxtcsrkip',
+      user: 'vumanhhung310198@gmail.com',
+      pass: 'oqzjotojotnjsdmw',
     },
   });
 
   transporter.sendMail(mailOption, function (error, info) {
     if (error) {
+      console.log(error)
       return true;
     } else {
       console.log("Email sent: " + info.response);

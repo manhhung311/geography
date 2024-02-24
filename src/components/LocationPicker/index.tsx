@@ -251,7 +251,7 @@ function LocationPicker({
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full w-full">
       <div className="flex items-center justify-between gap-3 pb-4">
         <div className="flex-1 w-full">
           <Dropdown
@@ -284,12 +284,11 @@ function LocationPicker({
         >
           <Button
             onClick={handleGetUserMomentLocation}
-            className="flex items-center gap-2"
+            className="flex w-32 items-center gap-2"
           >
             <span className="!hidden lg:!inline">
-              {"trans.myProfile.location.myLocation"}
+              vị trí
             </span>
-            <LocationPin size={18} />
           </Button>
         </Tooltip>
       </div>
@@ -339,15 +338,14 @@ function LocationPicker({
             size="large"
             loading={isLoading}
             disabled={!currentLocation || !currentLocationGeo}
-            className="font-semibold bg-primary text-white"
+            className="font-semibold bg-blue-600 text-white"
             onClick={handleSubmitLocation}
           >
-            {"CheckIn"}
+            {"Lựa Chọn"}
           </Button>
           <Button
             block
             size="large"
-            loading={isLoading}
             onClick={handleEndSelect}
           >
             {"Đóng"}

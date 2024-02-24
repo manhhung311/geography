@@ -62,7 +62,7 @@ const UploadImage = ({
             uid: item,
             name: item,
             status: "done",
-            url: `http://localhost:3000/uploads/${item}`,
+            url: `${process.env.NEXT_PUBLIC_HOST}/uploads/${item}`,
           };
         })
       );
@@ -70,7 +70,7 @@ const UploadImage = ({
   return (
     <>
       <Upload
-        action={"http://localhost:3000/api/upload"}
+        action={`${process.env.NEXT_PUBLIC_HOST}/api/upload`}
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}

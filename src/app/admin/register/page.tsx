@@ -1,13 +1,17 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import  { notification } from 'antd';
+import { useRouter } from "next/navigation";
 export default function Register() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [api, contextHolder] = notification.useNotification();
+  const router = useRouter();
   const handelRegister = async () => {
     if (name.trim() !== "" && email.trim() !== "" && password.trim() !== "") {
-      const api = await fetch("/api/register", {
+      const resRegister = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -15,11 +19,27 @@ export default function Register() {
         credentials: 'include',
         body: JSON.stringify({ name, email, password }),
       });
-      const res = await api.json();
+      const res = await resRegister.json();
+      if(res.message === "OK") {
+        api.error({
+          message: `Đăng Ký Thành Công`,
+          description: "vui lòng vào mail đã đăng ký để xác thực tài khoản",
+          placement: 'top',
+        });
+        router.push("/admin");
+      }
+      else {
+        api.error({
+          message: `Đã Xảy ra lỗi`,
+          description: res.message,
+          placement: 'top',
+        });
+      }
     }
   };
   return (
     <div className=" w-screen h-screen bg-[#F3E8DC] flex justify-center items-center">
+      {contextHolder}
       <div className=" bg-white h-2/3 w-1/4 rounded-xl shadow-2xl flex flex-col  items-center gap-5">
         <div className="h-1/2 flex items-center justify-center">
           <Image

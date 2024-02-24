@@ -4,29 +4,38 @@ import { useEffect, useState } from "react";
 import * as jwt from "jsonwebtoken";
 import { getCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import { Button } from "antd";
+import { Button, notification } from "antd";
 export default function Login() {
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [api, contextHolder] = notification.useNotification();
   const router = useRouter();
   const handelLogin = async () => {
     setLoading(true);
-    const api = await fetch("/api/login", {
+    const login = await fetch("/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify({ email, password }),
     });
-    const res = await api.json();
-    const decode = (await jwt.decode(res.token)) as any;
-    setCookie("token", res.token);
-    setCookie("role", decode?.role);
-    setCookie("email", decode.email);
-    setLoading(false);
-    router.push("/admin");
+    const res = await login.json();
+    if (res.statusCode === 200) {
+      const decode = (await jwt.decode(res.token)) as any;
+      setCookie("token", res.token);
+      setCookie("role", decode?.role);
+      setCookie("email", decode.email);
+      setLoading(false);
+      router.push("/admin");
+    }else {
+      api.error({
+        message: `Vui Lòng Thử Lại`,
+        description: res.message,
+        placement: 'top',
+      });
+    }
   };
   useEffect(() => {
     const token = getCookie("token");
@@ -36,6 +45,7 @@ export default function Login() {
   });
   return (
     <div className=" w-screen h-screen bg-[#F3E8DC] flex justify-center items-center">
+      {contextHolder}
       <div className=" bg-white h-2/3 w-1/4 rounded-xl shadow-2xl flex flex-col  items-center gap-5">
         <div className="h-1/2 flex items-center justify-center">
           <Image
