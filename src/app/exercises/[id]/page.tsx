@@ -9,7 +9,7 @@ import ChatBox from "@/components/chatBox";
 import { SiGoogleclassroom } from "react-icons/si";
 export default function Exercises({ params }: { params: { id: string } }) {
   const [rooms, setRooms] = useState<any[]>([]);
-  const [openModal, setOpenModal] = useState<boolean>(false)
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -18,6 +18,7 @@ export default function Exercises({ params }: { params: { id: string } }) {
 
   const [openChatGpt, setOpenChatGpt] = useState<boolean>();
   const [exercise, setExercise] = useState<any>();
+  const [title, setTitle] = useState<string>("");
   const getRooms = async () => {
     const api = await fetch(`/api/rooms/${params.id}`, {
       method: "GET",
@@ -51,7 +52,8 @@ export default function Exercises({ params }: { params: { id: string } }) {
                 span={5}
                 onClick={() => {
                   setOpenModal(true);
-                  setExercise(item.url)
+                  setTitle(item.title);
+                  setExercise(item.url);
                 }}
               >
                 <Card
@@ -76,7 +78,7 @@ export default function Exercises({ params }: { params: { id: string } }) {
       <Modal
         title={
           <div className=" flex justify-center items-center">
-            <span>{""}</span>
+            <span>{title}</span>
           </div>
         }
         footer={null}
@@ -99,12 +101,9 @@ export default function Exercises({ params }: { params: { id: string } }) {
         }}
       >
         <div className=" w-full h-full flex justify-center items-center overflow-auto">
-              <iframe
-                className=" w-full h-full overflow-scroll"
-                src={exercise}
-              >
-                Đang tải…
-              </iframe>
+          <iframe className=" w-full h-full overflow-scroll" src={exercise}>
+            Đang tải…
+          </iframe>
         </div>
       </Modal>
     </div>

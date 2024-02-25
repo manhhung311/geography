@@ -57,7 +57,7 @@ export default function Exercises() {
                 key={index}
                 span={5}
                 onClick={() => {
-                  // router.push(`/post/${item._id}`);
+                   router.push(`/exercises/${item}`);
                 }}
               >
                 <Card
