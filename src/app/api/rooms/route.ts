@@ -18,6 +18,15 @@ const connectDB = async () => {
 
 export async function GET(request: Request) {
   await connectDB();
-  const rooms = await ExerciseModel.distinct("classNumber");
-  return NextResponse.json(rooms);
+  const rooms = await ExerciseModel.find({});
+  const uniqueNumbers = new Set(rooms.map((item) => item.classNumber));
+
+  const uniqueData = rooms.filter((item) => {
+    if (uniqueNumbers.has(item.classNumber)) {
+      uniqueNumbers.delete(item.classNumber);
+      return true;
+    }
+    return false;
+  });
+  return NextResponse.json(uniqueData.map(item=> item.classNumber));
 }
