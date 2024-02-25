@@ -3,18 +3,18 @@ import SideBar from "@/components/SideBar";
 import ChatBox from "@/components/chatBox";
 import CustomMapND from "@/components/mapND";
 import { useState } from "react";
-import { Post } from "./../post/[id]/page";
-import NamDinh from "../../ND.json";
+import { Post } from "../../post/[id]/page";
+import NamDinh from "../../../ND.json";
 import TopMenu from "@/components/TopMenu";
-import Image from "next/image";
+import JSCategory from "../../../category.json";
 
-export default function Home() {
+export default function Category({ params }: { params: { id: string } }) {
   const [post, setPost] = useState<Post[]>([]);
   const [latitude, setLatitude] = useState<number>();
   const [longitude, setLongitude] = useState<number>();
   const [openChatGpt, setOpenChatGpt] = useState<boolean>();
-  const handelChange = async (select: string, field: string) => {
-    const api = await fetch(`/api/post?select=${select}&field=${field}`, {
+  const handelChange = async (select: string) => {
+    const api = await fetch(`/api/post?select=${select}&field=${params.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -41,17 +41,17 @@ export default function Home() {
         />
       </div>
       <div className=" flex w-full h-screen bg-white">
-        <div className=" w-2/12 h-full">
-          <SideBar />
+        <div className="flex flex-col gap-3 w-2/12 h-full">
+          <div className=" justify-center items-center flex text-black font-extrabold text-2xl">
+            <span>{JSCategory.data.find(item=> item.id === params.id)?.name || "Đường dẫn không hợp lệ"}</span>
+          </div>
+          <SideBar
+            onChangeND={(i) => handelChange(i)}
+            category={`${params.id}`}
+          />
         </div>
         <div className=" h-full w-10/12">
-          <Image
-            width={1000}
-            height={1000}
-            alt={""}
-            src={`/dentran.jpg`}
-            className="h-full w-full object-cover mx-auto"
-          />
+          <CustomMapND post={post} longitude={longitude} latitude={latitude} />
         </div>
         <ChatBox openClick={openChatGpt} />
       </div>

@@ -21,6 +21,8 @@ import { useEffect, useState } from "react";
 import CustomMapND from "@/components/mapND";
 import ChatBox from "@/components/chatBox";
 import { useRouter } from "next/navigation";
+import TopMenu from "@/components/TopMenu";
+import ChatPost from "@/components/chatPost";
 export default function Post({ params }: { params: { id: string } }) {
   const [post, setPost] = useState<Post>();
   const [item, setItem] = useState<any>();
@@ -76,6 +78,7 @@ export default function Post({ params }: { params: { id: string } }) {
                 <CustomMapND
                   latitude={post?.location?.latitude}
                   longitude={post?.location?.longitude}
+                  post={post? [post]: []}
                 />
               </div>
             </div>
@@ -99,87 +102,99 @@ export default function Post({ params }: { params: { id: string } }) {
             </div>
           ),
         },
+        {
+          label: (
+            <button className=" bg-[#23d3f1b0] p-2 w-full text-white">
+              Tìm Hiểu Thêm
+            </button>
+          ),
+          key: "4",
+          children: (
+            <div className=" w-full h-screen">
+              <ChatPost />
+            </div>
+          ),
+        }
       ]);
     }
   }, [post]);
   const [select, setSelect] = useState<number>();
+  const [openChatGpt, setOpenChatGpt] = useState<boolean>();
   return (
-    <div className=" flex w-screen h-screen">
-      <div className=" flex flex-col gap-2 items-center w-2/5 bg-gray-300 h-full p-2">
-        <div className=" w-full h-48">
-          <Image
-            width={1000}
-            height={1000}
-            alt={""}
-            src={`/logo.webp`}
-            className="h-full w-full mx-auto"
-            onClick={()=> {
-              router.push('/home');
-            }}
-          />
-        </div>
-        {post && (
-          <CustomCarousel navigation={true} className=" w-full" page={select}>
-            {post?.files.map((item, index) => {
-              return (
-                <div
-                  key={index}
-                  className="relative w-full rounded-lg h-[400px] h-max-[400px] flex justify-center items-center bg-neutral-100 cursor-pointer"
-                >
-                  <div className="h-[400px]">
-                    {(item.toLowerCase().endsWith("jpg") ||
-                      item.toLowerCase().endsWith("png") ||
-                      item.toLowerCase().endsWith("jpeg")) && (
-                      <Image
-                        width={1000}
-                        height={1000}
-                        alt={""}
-                        src={`/files/${item}`}
-                        className="h-full object-contain object-center mx-auto"
-                      />
-                    )}
-                    {(item.toLowerCase().endsWith("mp4") ||
-                      item.toLowerCase().endsWith("avi") ||
-                      item.toLowerCase().endsWith("mpeg")) && (
-                      <div className=" flex w-full h-full justify-center items-center">
-                        <video
-                          autoPlay={true}
-                          className="h-full w-1/3 object-cover"
-                          src={`/files/${item}`}
-                          controls
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  {post && post?.files.length > 1 && (
-                    <div className="absolute top-4 right-4 text-base px-3 py-1 rounded-full text-white bg-[#0005]">{`${
-                      post.files.length
-                    }/${1}`}</div>
-                  )}
-                </div>
-              );
-            })}
-          </CustomCarousel>
-        )}
-        <div className=" w-full h-36 bg-slate-500">
-          <Cards
-            post={post}
-            select={(index) => {
-              setSelect(index);
-            }}
-          />
-        </div>
-      </div>
-      <div className=" w-3/5 px-2 bg-gray-500 h-full overflow-hidden">
-        <Tabs
-          defaultActiveKey="1"
-          size={"large"}
-          style={{ marginBottom: 32 }}
-          items={item}
+    <div className=" w-screen h-screen">
+      <div className=" h-72 bg-white">
+        <TopMenu
+          openChatGpt={() => {
+            setOpenChatGpt(!openChatGpt);
+          }}
         />
       </div>
-      <ChatBox />
+
+      <div className=" flex w-full h-full">
+        <div className=" flex flex-col gap-2 items-center w-2/5 bg-gray-300 h-full p-2">
+          {post && (
+            <CustomCarousel navigation={true} className=" w-full" page={select}>
+              {post?.files.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="relative w-full rounded-lg h-[400px] h-max-[400px] flex justify-center items-center bg-neutral-100 cursor-pointer"
+                  >
+                    <div className="h-[400px]">
+                      {(item.toLowerCase().endsWith("jpg") ||
+                        item.toLowerCase().endsWith("png") ||
+                        item.toLowerCase().endsWith("jpeg")) && (
+                        <Image
+                          width={1000}
+                          height={1000}
+                          alt={""}
+                          src={`/files/${item}`}
+                          className="h-full object-contain object-center mx-auto"
+                        />
+                      )}
+                      {(item.toLowerCase().endsWith("mp4") ||
+                        item.toLowerCase().endsWith("avi") ||
+                        item.toLowerCase().endsWith("mpeg")) && (
+                        <div className=" flex w-full h-full justify-center items-center">
+                          <video
+                            autoPlay={false}
+                            className="h-full object-cover"
+                            src={`/files/${item}`}
+                            controls
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    {post && post?.files.length > 1 && (
+                      <div className="absolute top-4 right-4 text-base px-3 py-1 rounded-full text-white bg-[#0005]">{`${
+                        post.files.length
+                      }/${1}`}</div>
+                    )}
+                  </div>
+                );
+              })}
+            </CustomCarousel>
+          )}
+          <div className=" w-full h-36 bg-slate-500">
+            <Cards
+              post={post}
+              select={(index) => {
+                setSelect(index);
+              }}
+            />
+          </div>
+        </div>
+        <div className=" w-3/5 px-2 bg-gray-500 h-full overflow-hidden">
+          <Tabs
+            defaultActiveKey="1"
+            size={"large"}
+            style={{ marginBottom: 32 }}
+            items={item}
+          />
+        </div>
+        <ChatBox openClick={openChatGpt} />
+      </div>
     </div>
   );
 }

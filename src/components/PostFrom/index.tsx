@@ -17,11 +17,11 @@ import UploadImage from "../uploadImage";
 export default function PostForm({
   post,
   close,
-  updatePost
+  updatePost,
 }: {
   post?: any;
   close: () => void;
-  updatePost: (p: any)=> void
+  updatePost: (p: any) => void;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -30,13 +30,41 @@ export default function PostForm({
   const [locationGeo, setLocationGeo] = useState<Location>();
   const [feedbackForm] = Form.useForm();
   const [files, setFiles] = useState<UploadFile[]>([]);
+  const [listExercise, setListExercise] = useState<any[]>([]);
   const [representativeImage, setRepresentativeImage] = useState<UploadFile[]>(
     []
   );
 
+  const [selectExercise, setSelectExercise] = useState("");
+
   const editorRef: any = useRef(null);
   const [editorLoaded, setEditorLoaded] = useState(false);
   const { CKEditor, ClassicEditor } = editorRef.current || {};
+
+  const getExercises = async () => {
+    const api = await fetch("/api/exercises", {
+      method: "GET",
+      credentials: "include",
+    });
+    const res = await api.json();
+    setListExercise(
+      res.map((item: any) => {
+        return {
+          value: item.url,
+          label: (
+            <div
+              className="flex w-96 items-center justify-start gap-1"
+              onClick={() => {
+                setSelectExercise(item.url);
+              }}
+            >
+              <div className="col-span-2 text-ellipsis overflow-hidden">{item.title} - {item.url}</div>
+            </div>
+          ),
+        };
+      })
+    );
+  };
 
   useEffect(() => {
     editorRef.current = {
@@ -77,7 +105,7 @@ export default function PostForm({
             },
             district: selectField,
             files: files.map((item) => item.name),
-            exercise: exercise,
+            exercise: selectExercise,
           }),
         }
       );
@@ -87,18 +115,18 @@ export default function PostForm({
         const result = await response.json();
         updatePost({
           title,
-            content,
-            category: selectCategory,
-            location: {
-              name: location,
-              latitude: locationGeo?.lat,
-              longitude: locationGeo?.lon,
-              image: representativeImage[0].name,
-            },
-            district: selectField,
-            files: files.map((item) => item.name),
-            exercise: exercise,
-        })
+          content,
+          category: selectCategory,
+          location: {
+            name: location,
+            latitude: locationGeo?.lat,
+            longitude: locationGeo?.lon,
+            image: representativeImage[0].name,
+          },
+          district: selectField,
+          files: files.map((item) => item.name),
+          exercise: exercise,
+        });
         close();
       }
     } catch (error) {
@@ -160,6 +188,7 @@ export default function PostForm({
 
   useEffect(() => {
     setIsClient(typeof window !== "undefined");
+    getExercises();
   }, []);
   return (
     <Form className="p-4" form={feedbackForm} onFinish={handleSubmitForm}>
@@ -176,7 +205,7 @@ export default function PostForm({
             upload={(file) => {
               setRepresentativeImage(file);
             }}
-            media={post ? [post?.location?.image] : []}
+            media={post ? post?.location?.image : []}
             limitUpload={1}
           />
         </div>
@@ -193,11 +222,10 @@ export default function PostForm({
       <div className="grid gap-2">
         <Subtitle title={"Link bài tập google doc"} required={false} />
         <Form.Item name={"exercise"}>
-          <Input
-            type="url"
-            value={exercise}
-            disabled={loading}
-            maxLength={500}
+          <Select
+            size="large"
+            style={{ width: "100%" }}
+            options={listExercise}
           />
         </Form.Item>
       </div>

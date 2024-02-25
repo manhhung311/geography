@@ -31,7 +31,7 @@ const postSchema: Schema = new Schema({
   location: { type: locationSchema, required: true },
   district: { type: String, required: true },
   exercise: { type: String, required: false },
-  // account: {type: accountSchema}
+  account: {type: accountSchema}
 });
 
 const PostModel = mongoose.models.Post

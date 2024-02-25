@@ -21,7 +21,7 @@ const Cards = ({ post, select }: { post?: Post; select: (id: number) => void }) 
               return (
                 <video
                   key={index}
-                  autoPlay={true}
+                  autoPlay={false}
                   className=" w-1/3 h-full object-cover"
                   src={`/files/${item}`}
                   onClick={()=>{select(index)}}

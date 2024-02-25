@@ -3,20 +3,21 @@ import SidebarMenu from '../SidebarMenu';
 
 type IG = {
   collapsed?: boolean;
-  onChange:(select: string, field: string)=> void
+  onChangeND?: (item: string) => void;
+  onChangeCategory?: (item: string) => void;
+  category?: string;
 };
 
-const SideBar = ({ collapsed = false, onChange }: IG) => {
+const SideBar = ({ collapsed = false, onChangeND, onChangeCategory, category }: IG) => {
   return (
     <Layout
-      className="hidden h-screen border-r border-gray lg:block z-[10]"
+      className="hidden border-r border-gray lg:block z-[10]"
       style={{
         height: '100vh',
-        position: 'fixed',
         left: 0,
       }}
     >
-      <SidebarMenu collapsed={collapsed} onChange={onChange}/>
+      <SidebarMenu collapsed={collapsed} onChangeND={onChangeND} onChangeCategory={onChangeCategory} category={category}/>
     </Layout>
   );
 };

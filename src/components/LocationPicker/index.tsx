@@ -278,7 +278,7 @@ function LocationPicker({
           </Dropdown>
         </div>
         <Tooltip
-          title={"trans.myProfile.location.myLocation"}
+          title={"Vị trí của bạn"}
           color="rgba(0, 0, 0, 0.8)"
           placement="bottom"
         >

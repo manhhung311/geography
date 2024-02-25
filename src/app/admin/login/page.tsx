@@ -46,7 +46,7 @@ export default function Login() {
   return (
     <div className=" w-screen h-screen bg-[#F3E8DC] flex justify-center items-center">
       {contextHolder}
-      <div className=" bg-white h-2/3 w-1/4 rounded-xl shadow-2xl flex flex-col  items-center gap-5">
+      <div className=" bg-white sm:h-2/3 sm:w-1/4 h-full w-full rounded-xl shadow-2xl flex flex-col  items-center gap-5">
         <div className="h-1/2 flex items-center justify-center">
           <Image
             src={"/logo.webp"}
@@ -92,6 +92,9 @@ export default function Login() {
           >
             ĐĂNG NHẬP
           </Button>
+        </div>
+        <div className=" flex justify-center items-center cursor-pointer">
+          <span className=" text-blue-700 text-xs hover:underline" onClick={()=> router.push('/admin/register')}>Đăng Ký</span>
         </div>
       </div>
     </div>

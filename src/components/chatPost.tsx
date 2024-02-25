@@ -1,7 +1,6 @@
 "use client";
 import OpenAI from "openai";
-import { useEffect, useState } from "react";
-import { TbMessageCircleQuestion } from "react-icons/tb";
+import { useState } from "react";
 
 enum TypeMessage {
   user,
@@ -12,7 +11,7 @@ type Message = {
   type: TypeMessage;
 };
 
-export default function ChatBox({ openClick }: { openClick?: boolean }) {
+export default function ChatPost() {
   const openai = new OpenAI({
     apiKey: "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",
     dangerouslyAllowBrowser: true,
@@ -48,40 +47,15 @@ export default function ChatBox({ openClick }: { openClick?: boolean }) {
       setInput("");
       setLoading(false);
     } catch (error) {
-      console.error("Error calling ChatGPT API:", error);
       setLoading(false);
+      console.error("Error calling ChatGPT API:", error);
       throw error;
     }
   };
 
-  useEffect(() => {
-    if (openClick !== undefined) setOpen(true);
-  }, [openClick]);
-
-  return open ? (
-    <div className="fixed bottom-0 right-0 mr-4 mb-4 max-w-xs sm:min-w-40 min-w-12 bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden sm:w-full w-52">
-      <div className="bg-blue-600 text-white p-3">
-        <div className="flex justify-between items-center">
-          <span>Hỗ Trợ Tìm Hiểu Kiến Thức</span>
-          <button className="text-white text-sm" onClick={() => setOpen(false)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div className="p-3 sm:h-96 h-64 overflow-y-auto">
+  return (
+    <div className="mr-4 p-4 mb-4 w-full bg-white rounded-lg border border-gray-200 shadow-lg overflow-hidden text-xl">
+      <div className="p-3 sm:h-[700px]  overflow-y-auto">
         {listMessage.length > 0 ? (
           listMessage.map((item, index) => {
             if (item.type === TypeMessage.user) {
@@ -160,14 +134,6 @@ export default function ChatBox({ openClick }: { openClick?: boolean }) {
           </svg>
         </button>
       </div>
-    </div>
-  ) : (
-    <div className="fixed bottom-0 right-0 mr-4 mb-4">
-      <TbMessageCircleQuestion
-        color="#00FFFF"
-        className=" w-12 h-12 cursor-pointer hover:w-14 hover:h-14"
-        onClick={() => setOpen(true)}
-      />
     </div>
   );
 }

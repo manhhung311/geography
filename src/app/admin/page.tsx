@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { HiUsers } from "react-icons/hi2";
 
 import { useRouter } from "next/navigation";
+import { FaBook } from "react-icons/fa";
 export default function Home() {
   const [login, setLogin] = useState<boolean>(true);
   const [email, setEmail] = useState<string>("");
@@ -77,7 +78,7 @@ export default function Home() {
             </div>
           </div>
           <div className=" flex w-full h-full">
-            <div className=" w-2/12 flex  flex-col border-l-2 border-gray-50 gap-5 p-8">
+            <div className=" sm:w-2/12 w-36 flex  flex-col border-l-2 border-gray-50 gap-5 p-8">
               <div
                 className={`${
                   menu === 0 ? " bg-zinc-400" : ""
@@ -95,6 +96,15 @@ export default function Home() {
               >
                 <HiUsers />
                 <span>Tài Khoản</span>
+              </div>
+              <div
+                className={`${
+                  menu === 2 ? " bg-zinc-400" : ""
+                } flex gap-2 p-4 justify-start cursor-pointer`}
+                onClick={() => setMenu(2)}
+              >
+                <FaBook />
+                <span>Bài Tập</span>
               </div>
             </div>
             <div className=" w-10/12 p-8 bg-slate-300 h-full overflow-auto">

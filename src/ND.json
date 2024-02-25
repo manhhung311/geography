@@ -2,6 +2,12 @@
   "Nam_Dinh": {
     "districts": [
       {
+        "id":"TPND",
+        "name": "Thành Phố Nam Định",
+        "latitude": 20.426742316432616,
+        "longitude": 106.17467606521714
+      },
+      {
         "id":"GT",
         "name": "Giao Thuy",
         "latitude": 20.283061710778913,

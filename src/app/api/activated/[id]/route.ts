@@ -24,13 +24,11 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   if (user && !user.activated) {
     user.activated = true;
     user.save();
-    return NextResponse.json(
-      { message: "Vui Lòng Đăng Nhập" },
-      { status: 200 }
-    );
+    return NextResponse.redirect(`${process.env.HOST}/admin/login`)
+
   }
   return NextResponse.json(
-    { message: "Tài Khoản Hoặc Mật Khẩu Không Đúng" },
+    { message: "Tài Khoản đã được kích hoạt" },
     { status: 404 }
   );
 }

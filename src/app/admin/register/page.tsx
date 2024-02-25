@@ -40,7 +40,7 @@ export default function Register() {
   return (
     <div className=" w-screen h-screen bg-[#F3E8DC] flex justify-center items-center">
       {contextHolder}
-      <div className=" bg-white h-2/3 w-1/4 rounded-xl shadow-2xl flex flex-col  items-center gap-5">
+      <div className=" bg-white sm:h-3/4 sm:w-1/4 w-full h-full rounded-xl shadow-2xl flex flex-col  items-center gap-4">
         <div className="h-1/2 flex items-center justify-center">
           <Image
             src={"/logo.webp"}

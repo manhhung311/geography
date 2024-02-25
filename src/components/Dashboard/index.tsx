@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Category from "../../category.json";
 import PostForm from "../PostFrom";
 import { getCookie } from "cookies-next";
+import ExerciseForm from "../ExerciseFrom";
 interface DataType {
   key: string;
   name: string;
@@ -18,13 +19,16 @@ interface DataType {
   address: string;
   activated: boolean;
   _id: string;
+  url: string;
 }
 export default function DataBoard({ menu }: { menu: number }) {
   const [columns, setColumns] = useState<TableProps<DataType>["columns"]>();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [post, setPost] = useState<Post>();
+  const [exercise, setExercise] = useState<any>();
   const [listPost, setListPost] = useState<Array<DataType>>([]);
   const [listUser, setListUser] = useState<Array<DataType>>([]);
+  const [listExercise, setListExercise] = useState<Array<DataType>>([]);
   const [role, setRole] = useState<string>("");
   const getPost = async () => {
     const api = await fetch("/api/post", {
@@ -42,6 +46,15 @@ export default function DataBoard({ menu }: { menu: number }) {
     });
     const res = await api.json();
     setListUser(res);
+  };
+
+  const getExercises = async () => {
+    const api = await fetch("/api/exercises", {
+      method: "GET",
+      credentials: "include",
+    });
+    const res = await api.json();
+    setListExercise(res);
   };
 
   const activatePost = async (id: string) => {
@@ -72,8 +85,41 @@ export default function DataBoard({ menu }: { menu: number }) {
     }
   };
 
+  const activateExercise = async (id: string) => {
+    const response = await fetch(`/api/exercises/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        ...exercise,
+        activated: true,
+      }),
+    });
+    const res = await response.json();
+    if (res.message === "OK") {
+      setListExercise(
+        listExercise.map((item) => {
+          if (item._id === id) {
+            return {
+              ...item,
+              activated: true,
+            };
+          }
+          return item;
+        })
+      );
+    }
+  };
+
   const handelEditPost = async (data: any) => {
     setPost(data);
+    setOpenModal(true);
+  };
+
+  const handelEditExercise = async (data: any) => {
+    setExercise(data);
     setOpenModal(true);
   };
 
@@ -102,6 +148,20 @@ export default function DataBoard({ menu }: { menu: number }) {
     const res = await response.json();
     if (res.message == "OK") {
       setListUser(listUser.filter((item) => item._id !== id));
+    }
+  };
+
+  const deleteExercise = async (id: string) => {
+    const response = await fetch(`/api/exercises/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const res = await response.json();
+    if (res.message == "OK") {
+      setListExercise(listExercise?.filter((item) => item._id !== id));
     }
   };
 
@@ -174,7 +234,7 @@ export default function DataBoard({ menu }: { menu: number }) {
           ),
         },
       ]);
-      if(!listPost|| listPost.length === 0)getPost();
+      if (!listPost || listPost.length === 0) getPost();
     }
     if (menu === 1) {
       setColumns([
@@ -215,9 +275,69 @@ export default function DataBoard({ menu }: { menu: number }) {
           ),
         },
       ]);
-      if(!listUser || listUser.length === 0)getUser();
+      if (!listUser || listUser.length === 0) getUser();
     }
-  }, [menu, role, listPost, listUser]);
+    if (menu === 2) {
+      setColumns([
+        {
+          title: "tiêu đề",
+          dataIndex: "title",
+          key: "title",
+          render: (text, { url }) => (
+            <a href={url} target={"_blank"}>
+              {text}
+            </a>
+          ),
+        },
+        {
+          title: "url",
+          dataIndex: "url",
+          key: "url",
+          render: (_, { url }) => (
+            <div className=" w-56">
+              <a href={url} target={"_blank"}>
+                {url}
+              </a>
+            </div>
+          ),
+        },
+        {
+          title: "Trạng Thái",
+          key: "activated",
+          dataIndex: "activated",
+          render: (_, { activated }) => (
+            <>
+              {
+                <Tag color={activated ? "geekblue" : "red"}>
+                  {activated ? "Kích Hoạt" : "Chưa Kích Hoạt"}
+                </Tag>
+              }
+            </>
+          ),
+        },
+        {
+          title: "Action",
+          key: "action",
+          render: (_, record) => (
+            <Space size="middle">
+              <EditTwoTone onClick={() => handelEditExercise(record)} />
+              {role === "admin" && (
+                <DeleteTwoTone onClick={() => deleteExercise(record._id)} />
+              )}
+              {!record.activated && role === "admin" && (
+                <CheckSquareTwoTone
+                  onClick={() => {
+                    activateExercise(record._id);
+                  }}
+                />
+              )}
+            </Space>
+          ),
+        },
+      ]);
+      if (!listExercise || listExercise.length === 0) getExercises();
+    }
+  }, [menu, role, listPost, listUser, listExercise]);
 
   return (
     <div>
@@ -232,12 +352,14 @@ export default function DataBoard({ menu }: { menu: number }) {
       <Table
         columns={columns}
         pagination={{ pageSize: 10 }}
-        dataSource={menu === 0 ? listPost : listUser}
+        dataSource={
+          menu === 0 ? listPost : menu === 1 ? listUser : listExercise
+        }
       />
       <Modal
         title={
           <div className=" flex justify-center items-center">
-            <span>POST</span>
+            <span>{menu === 0 ? "POST" : menu === 2 ? "exercise" : ""}</span>
           </div>
         }
         footer={null}
@@ -248,26 +370,38 @@ export default function DataBoard({ menu }: { menu: number }) {
         destroyOnClose={true}
         closable={false}
         centered={true}
-        width={900}
+        width={menu === 0 ? 900 : menu === 2 ? 300 : 200}
         zIndex={10}
         bodyStyle={{
           position: "relative",
           paddingInline: "8px",
           overflowY: "auto",
           borderTop: "1px solid #E8E8E8",
-          height: "80vh",
+          height: `${menu === 0 ? "80vh" : menu === 2 ? "40vh" : ""}`,
           // overflow: "hidden",
         }}
       >
-        <div className=" flex justify-center items-center overflow-auto">
+        <div className=" w-full h-full flex justify-center items-center overflow-auto">
           {menu === 0 && (
             <PostForm
               post={post}
               close={() => {
                 setOpenModal(false);
                 getPost();
+                setPost(undefined)
               }}
               updatePost={(p) => setPost(p)}
+            />
+          )}
+          {menu == 2 && (
+            <ExerciseForm
+              exercise={exercise}
+              close={() => {
+                setOpenModal(false);
+                getExercises();
+                setExercise(undefined)
+              }}
+              updateExercise={(p) => setExercise(p)}
             />
           )}
         </div>

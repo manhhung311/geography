@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Upload } from "antd";
 import type { UploadFile, UploadProps } from "antd";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 type FileType = UploadFile;
 
 const getBase64 = (file: FileType): Promise<string> =>
@@ -40,9 +40,9 @@ const UploadImage = ({
     );
   };
 
-  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>{
+  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
-  } 
+  };
 
   const uploadButton = (
     <button style={{ border: 0, background: "none" }} type="button">
@@ -56,7 +56,7 @@ const UploadImage = ({
   }, [fileList]);
 
   useEffect(() => {
-    if (media && media.length > 0)
+    if (media && media.length > 0 && Array.isArray(media))
       setFileList(
         media?.map((item: string) => {
           return {
@@ -67,6 +67,16 @@ const UploadImage = ({
           };
         })
       );
+    if (media && !Array.isArray(media)) {
+      setFileList([
+        {
+          uid: media,
+          name: media,
+          status: "done",
+          url: `${process.env.NEXT_PUBLIC_HOST}/files/${media}`,
+        },
+      ]);
+    }
   }, [media]);
 
   const CustomUpload = async (options: any) => {
@@ -81,19 +91,39 @@ const UploadImage = ({
     formData.append("file", new File([file], newFileName, { type: file.type }));
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/upload`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_HOST}/api/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         console.log("Upload success");
-        setFileList([...fileList, {
-          uid: newFileName,
-          name: newFileName,
-          status: "done",
-          url: `${process.env.NEXT_PUBLIC_HOST}/files/${newFileName}`,
-        }])
+        setFileList(
+          fileList.map((item) => {
+            if (item.name === file.name) {
+              return {
+                ...item,
+                status: "done",
+                uid: newFileName,
+                name: newFileName,
+                url: `${process.env.NEXT_PUBLIC_HOST}/files/${newFileName}`,
+              };
+            }
+            return item;
+          })
+        );
+
+        //   ...fileList,
+        //   {
+        //     uid: newFileName,
+        //     name: newFileName,
+        //     status: "done",
+        //     url: `${process.env.NEXT_PUBLIC_HOST}/files/${newFileName}`,
+        //   },
+        // ]);
         // Xử lý thêm sau khi upload thành công nếu cần
       } else {
         console.error("Upload failed");
@@ -111,6 +141,7 @@ const UploadImage = ({
         fileList={fileList}
         onPreview={handlePreview}
         customRequest={CustomUpload}
+        onChange={handleChange}
       >
         {!limitUpload || (limitUpload && fileList.length < limitUpload)
           ? uploadButton

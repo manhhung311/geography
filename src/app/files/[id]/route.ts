@@ -22,6 +22,12 @@ export async function GET(
     if(type === "mp4") {
       contentType = 'video/mp4'
     }
+    if(type === "avi") {
+      contentType = 'video/avi'
+    }
+    if(type === "mpeg") {
+      contentType = 'video/mpeg'
+    }
     return new NextResponse(fd, {status: 200, headers: {"Content-type": contentType}})
   }catch(ex) {
     console.log(ex)

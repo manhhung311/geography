@@ -40,3 +40,33 @@ body {
 .ck-editor__editable {
   min-height:200px;
 }
+
+.topMenu {
+  background-color: #007bff; /* Màu nền thanh menu */
+  color: white;
+  display: flex;
+  justify-content: space-around; /* Điều chỉnh khoảng cách */
+  align-items: center;
+  padding: 0.5em;
+}
+
+.menuList {
+  list-style: none; /* Bỏ dấu chấm danh sách */
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.menuItem {
+  margin: 0 1em; /* Khoảng cách giữa các mục */
+}
+
+.menuItem a {
+  color: white; /* Màu chữ của link */
+  text-decoration: none; /* Bỏ gạch chân của link */
+  font-weight: bold;
+}
+
+.menuItem a:hover {
+  text-decoration: underline; /* Gạch chân khi hover */
+}
