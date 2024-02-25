@@ -13,7 +13,7 @@ type Message = {
 
 export default function ChatPost() {
   const openai = new OpenAI({
-    apiKey: "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",
+    apiKey: "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",
     dangerouslyAllowBrowser: true,
   });
   const [input, setInput] = useState<string>("");

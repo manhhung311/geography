@@ -6,7 +6,7 @@ import {
   UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Avatar, Dropdown, Menu, Tooltip } from "antd";
+import { Avatar, Dropdown, Menu, Tooltip, Select } from "antd";
 import { getCookie, setCookie } from "cookies-next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -47,6 +47,8 @@ export default function Home() {
     </Menu>
   );
 
+  const [show, setShow] = useState<boolean>(false);
+
   const [menu, setMenu] = useState<number>(0);
   return (
     <>
@@ -54,15 +56,15 @@ export default function Home() {
         <div className=" w-screen h-screen overflow-hidden bg-white text-black">
           <div className="w-full flex justify-between h-">
             <div className=" w-2/12 flex justify-center items-center">
-            <Tooltip placement="top" title={"Về Trang Chủ"}>
-              <Image
-                src={"/logo.webp"}
-                width={500}
-                height={500}
-                className=" h-16 object-cover cursor-pointer"
-                alt="logo"
-                onClick={()=> router.push('/')}
-              />
+              <Tooltip placement="top" title={"Về Trang Chủ"}>
+                <Image
+                  src={"/logo.webp"}
+                  width={500}
+                  height={500}
+                  className=" h-16 object-cover cursor-pointer"
+                  alt="logo"
+                  onClick={() => router.push("/")}
+                />
               </Tooltip>
             </div>
             <div className=" h-full p-5">
@@ -116,12 +118,53 @@ export default function Home() {
         <div className=" w-screen h-screen bg-[url('/backgroud-login.jpg')] bg-cover bg-no-repeat bg-center">
           <div className="w-full h-full flex justify-center items-center">
             <div className=" flex">
-              <button
-                onClick={() => router.push("/admin/login")}
-                className=" origin-center shadow-2xl bg-blue-700 p-5 rounded"
-              >
-                ĐĂNG NHẬP
-              </button>
+              {!show && (
+                <button
+                  onClick={() => setShow(true)}
+                  className=" origin-center shadow-2xl bg-blue-700 p-5 rounded"
+                >
+                  TRUY CẬP TRANG
+                </button>
+              )}
+              {show && (
+                <Select
+                  size="large"
+                  style={{ width: "300px" }}
+                  defaultValue={"Vui Lòng Lựa Chọn"}
+                  options={[
+                    {
+                      value: "1",
+                      label: (
+                        <div
+                          className="flex w-96 items-center justify-start gap-1"
+                          onClick={() => {
+                            router.push("/admin/login");
+                          }}
+                        >
+                          <div className="col-span-2 text-ellipsis overflow-hidden">
+                            Truy cập tư cách là giáo viên
+                          </div>
+                        </div>
+                      ),
+                    },
+                    {
+                      value: "2",
+                      label: (
+                        <div
+                          className="flex w-96 items-center justify-start gap-1"
+                          onClick={() => {
+                            router.push("/home");
+                          }}
+                        >
+                          <div className="col-span-2 text-ellipsis overflow-hidden">
+                            Truy cập tư cách là khách
+                          </div>
+                        </div>
+                      ),
+                    },
+                  ]}
+                />
+              )}
             </div>
           </div>
         </div>

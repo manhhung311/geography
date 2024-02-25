@@ -377,11 +377,11 @@ export default function DataBoard({ menu }: { menu: number }) {
           paddingInline: "8px",
           overflowY: "auto",
           borderTop: "1px solid #E8E8E8",
-          height: `${menu === 0 ? "80vh" : menu === 2 ? "40vh" : ""}`,
+          height: `${menu === 0 ? "90vh" : menu === 2 ? "40vh" : ""}`,
           // overflow: "hidden",
         }}
       >
-        <div className=" w-full h-full flex justify-center items-center overflow-auto">
+        <div className=" w-full flex justify-center items-center overflow-auto">
           {menu === 0 && (
             <PostForm
               post={post}

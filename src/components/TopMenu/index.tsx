@@ -29,7 +29,10 @@ export default function TopMenu({ openChatGpt }: { openChatGpt: () => void }) {
         <nav className={"topMenu"}>
           <ul className={"menuList"}>
             <li className={"menuItem  p-2"}>
-            <Link href={`/home`}>{"Trang Chủ"}</Link>
+              <Link href={`/`}>{"Trang Chủ"}</Link>
+            </li>
+            <li className={"menuItem  p-2"}>
+              <Link href={`/home`}>{"Home"}</Link>
             </li>
             {Category.data.map((item, index) => {
               return (

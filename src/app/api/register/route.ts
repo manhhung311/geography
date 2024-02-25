@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     name,
     key: salt,
   });
-  sendMail(email, `${process.env.HOST as string}/api/activated/${encodeURI(salt)}`);
+  sendMail(email, `${process.env.HOST as string}/api/activated/${encodeURIComponent(salt)}`);
   return NextResponse.json({ message: "OK" });
 }
 
