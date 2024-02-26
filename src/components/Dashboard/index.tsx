@@ -343,6 +343,8 @@ export default function DataBoard({ menu }: { menu: number }) {
     <div>
       <Button
         onClick={() => {
+          setPost(undefined)
+          setExercise(undefined)
           setOpenModal(true);
         }}
         className=" bg-white border-2 border-blue-200"

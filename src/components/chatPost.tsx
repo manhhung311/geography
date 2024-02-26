@@ -25,30 +25,28 @@ export default function ChatPost() {
     const question = `${input}. Hãy giới hạn trong các lĩnh vực lịch sử, Giáo dục, Lễ Hội, Làng nghề, Văn học, Âm nhạc, Mĩ thuật, Du lịch, Kinh tế, Chính trị`;
     setLoading(true);
     try {
-      const completion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "user",
-            content: question,
-          },
-        ],
+      const api = await fetch(`/api/chats`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ input: question }),
+        credentials: "include",
       });
+      const res = await api.json();
       setListMessage([
         ...listMessage,
         { type: TypeMessage.user, content: inputQuestion },
         {
           type: TypeMessage.system,
-          content:
-            completion.choices[0].message.content ||
-            "Đã xảy ra lỗi vui lòng thử lại",
+          content: res.content || "Đã xảy ra lỗi vui lòng thử lại",
         },
       ]);
       setInput("");
       setLoading(false);
     } catch (error) {
-      setLoading(false);
       console.error("Error calling ChatGPT API:", error);
+      setLoading(false);
       throw error;
     }
   };

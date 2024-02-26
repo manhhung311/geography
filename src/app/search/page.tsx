@@ -79,7 +79,7 @@ export default function Search() {
                   title={
                     <div className=" w-full h-max-[400px] flex justify-center items-center">
                       <img
-                        src={`${process.env.NEXT_PUBLIC_HOST}/files/${item.location.image}`}
+                        src={`/files/${item.location.image}`}
                         className=" w-full h-full object-scale-down"
                       />
                     </div>

@@ -159,9 +159,11 @@ export default function Post({ params }: { params: { id: string } }) {
                           <video
                             autoPlay={false}
                             className="h-full object-cover"
-                            src={`/files/${item}`}
                             controls
-                          />
+                            preload="metadata"
+                          >
+                            <source src={`/files/${item}`} type={`video/${item.split('.').pop()}`}/>
+                          </video>
                         </div>
                       )}
                     </div>

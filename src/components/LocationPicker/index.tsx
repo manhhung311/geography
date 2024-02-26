@@ -286,7 +286,7 @@ function LocationPicker({
             onClick={handleGetUserMomentLocation}
             className="flex w-32 items-center gap-2"
           >
-            <span className="!hidden lg:!inline">
+            <span className="!hidden lg:!inline text-black">
               vị trí
             </span>
           </Button>

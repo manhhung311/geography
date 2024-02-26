@@ -1,5 +1,4 @@
 "use client";
-import OpenAI from "openai";
 import { useEffect, useState } from "react";
 import { TbMessageCircleQuestion } from "react-icons/tb";
 
@@ -13,10 +12,6 @@ type Message = {
 };
 
 export default function ChatBox({ openClick }: { openClick?: boolean }) {
-  const openai = new OpenAI({
-    apiKey: "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",
-    dangerouslyAllowBrowser: true,
-  });
   const [input, setInput] = useState<string>("");
   const [listMessage, setListMessage] = useState<Array<Message>>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,23 +21,21 @@ export default function ChatBox({ openClick }: { openClick?: boolean }) {
     const question = `${input}. Hãy giới hạn trong các lĩnh vực lịch sử, Giáo dục, Lễ Hội, Làng nghề, Văn học, Âm nhạc, Mĩ thuật, Du lịch, Kinh tế, Chính trị`;
     setLoading(true);
     try {
-      const completion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "user",
-            content: question,
-          },
-        ],
+      const api = await fetch(`/api/chats`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ input: question }),
+        credentials: "include",
       });
+      const res = await api.json();
       setListMessage([
         ...listMessage,
         { type: TypeMessage.user, content: inputQuestion },
         {
           type: TypeMessage.system,
-          content:
-            completion.choices[0].message.content ||
-            "Đã xảy ra lỗi vui lòng thử lại",
+          content: res.content || "Đã xảy ra lỗi vui lòng thử lại",
         },
       ]);
       setInput("");
