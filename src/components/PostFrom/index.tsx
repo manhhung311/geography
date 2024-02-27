@@ -58,7 +58,9 @@ export default function PostForm({
                 setSelectExercise(item.url);
               }}
             >
-              <div className="col-span-2 text-ellipsis overflow-hidden">{item.title} - {item.url}</div>
+              <div className="col-span-2 text-ellipsis overflow-hidden">
+                {item.title} - {item.url}
+              </div>
             </div>
           ),
         };
@@ -74,7 +76,7 @@ export default function PostForm({
     setEditorLoaded(true);
   }, []);
 
-  const [selectCategory, setSelectCategory] = useState<String>();
+  const [selectCategory, setSelectCategory] = useState<string[]>();
   const [selectField, setSelectField] = useState<String>("");
   const title = Form.useWatch("title", feedbackForm);
   const exercise = Form.useWatch("exercise", feedbackForm);
@@ -175,9 +177,6 @@ export default function PostForm({
       label: (
         <div
           className="flex items-center justify-start gap-1"
-          onClick={() => {
-            setSelectCategory(item.id);
-          }}
         >
           <div className="col-span-2">{item.name}</div>
         </div>
@@ -190,6 +189,10 @@ export default function PostForm({
     setIsClient(typeof window !== "undefined");
     getExercises();
   }, []);
+
+  const handleChangeCategory = (value: string[])=> {
+    setSelectCategory(value);
+  }
   return (
     <Form className="p-4" form={feedbackForm} onFinish={handleSubmitForm}>
       <div className="grid gap-2">
@@ -224,6 +227,7 @@ export default function PostForm({
         <Form.Item name={"exercise"}>
           <Select
             size="large"
+            mode={"multiple"}
             style={{ width: "100%" }}
             options={listExercise}
           />
@@ -236,7 +240,12 @@ export default function PostForm({
             size="large"
             style={{ width: "100%" }}
             options={optionsCategory}
-          />
+            mode="multiple"
+            placeholder="Lựa chọn danh mục"
+            defaultValue={["china"]}
+            optionLabelProp="label"
+            onChange={handleChangeCategory}
+          ></Select>
         </Form.Item>
       </div>
       <div className="grid gap-2">

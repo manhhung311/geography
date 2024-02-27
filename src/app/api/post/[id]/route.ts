@@ -21,11 +21,28 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  await connectDB();
-  const post = params.id
-    ? await PostModel.findById(params.id)
-    : await PostModel.find({});
-  return NextResponse.json({ post });
+  const cookiesHeader = request.headers.get("cookie");
+  const cookies: { [key: string]: string } = {};
+  if (cookiesHeader) {
+    cookiesHeader.split(";").forEach((cookie) => {
+      const [key, value] = cookie.split("=").map((c) => c.trim());
+      cookies[key] = decodeURIComponent(value);
+    });
+  }
+
+  const post = await PostModel.findById(params.id);
+  if (post?.activated) {
+    return NextResponse.json({ post });
+  } else {
+    const token = cookies["token"];
+    const payload: any = await jwt.verify(
+      token,
+      process.env.PRIVATE_KEY as string
+    );
+    const user = await AccountModel.findOne({ email: payload.email });
+    if(user?.role === "admin") return NextResponse.json({post});
+  }
+  return NextResponse.json({ });
 }
 
 export async function PUT(
@@ -102,10 +119,8 @@ export async function DELETE(
     process.env.PRIVATE_KEY as string
   );
   const user = await AccountModel.findOne({ email: payload.email });
-  if (user && user.role === "admin"){
+  if (user && user.role === "admin") {
     await PostModel.findByIdAndDelete(params.id);
     return NextResponse.json({ message: "OK" });
-  }
-  else 
-  return NextResponse.json({ message: "" }, {status: 500});
+  } else return NextResponse.json({ message: "" }, { status: 500 });
 }

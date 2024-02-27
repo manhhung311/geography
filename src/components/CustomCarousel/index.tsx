@@ -36,12 +36,11 @@ function CustomCarousel({
   );
 
   useEffect(() => {
-    handleGoPrevSlider();
-    handleGoNextSlider();
+
   }, []);
 
   useEffect(() => {
-    if(page) {
+    if(page || page === 0) {
       carouselRef.current?.goTo(page, false)
     }
   }, [page]);

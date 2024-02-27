@@ -14,6 +14,7 @@ export default function Category({ params }: { params: { id: string } }) {
   const [longitude, setLongitude] = useState<number>();
   const [openChatGpt, setOpenChatGpt] = useState<boolean>();
   const handelChange = async (select: string) => {
+    console.log("selec", select)
     const api = await fetch(`/api/post?select=${select}&field=${params.id}`, {
       method: "GET",
       headers: {

@@ -54,7 +54,13 @@ export async function GET(request: Request) {
     select && field
       ? await PostModel.find({
           district: select.trim(),
-          category: field.trim(),
+          category: { $all: [field.trim()] },
+          activated: true
+        })
+      : field
+      ? await PostModel.find({
+          category: { $all: [field.trim()] },
+          activated: true
         })
       : await PostModel.find({});
   return NextResponse.json(post);

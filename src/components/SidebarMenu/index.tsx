@@ -18,7 +18,7 @@ const SidebarMenu = ({
   category,
 }: IG) => {
   const [field, setField] = useState<string>();
-  const [select, setSelect] = useState<string>(ND.Nam_Dinh.districts[0].id);
+  const [select, setSelect] = useState<string>("");
   const TopMenuItems: any[] = Category.data.map((item) => {
     return {
       name: item.name,
@@ -67,7 +67,8 @@ const SidebarMenu = ({
             <Select
               size="large"
               style={{ width: "100%" }}
-              defaultValue={"Nam Định"}
+              defaultValue={'Mời Lựa chọn'}
+              value={null}
               options={options}
               open={openSelect}
               onClick={() => setOpenSelect(!openSelect)}

@@ -337,6 +337,7 @@ export default function DataBoard({ menu }: { menu: number }) {
       ]);
       if (!listExercise || listExercise.length === 0) getExercises();
     }
+    console.log(listPost.length)
   }, [menu, role, listPost, listUser, listExercise]);
 
   return (
@@ -357,6 +358,7 @@ export default function DataBoard({ menu }: { menu: number }) {
         dataSource={
           menu === 0 ? listPost : menu === 1 ? listUser : listExercise
         }
+        className=" mb-8"
       />
       <Modal
         title={

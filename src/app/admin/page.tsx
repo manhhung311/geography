@@ -58,7 +58,7 @@ export default function Home() {
             <div className=" w-2/12 flex justify-center items-center">
               <Tooltip placement="top" title={"Về Trang Chủ"}>
                 <Image
-                  src={"/logo.webp"}
+                  src={"/logo.png"}
                   width={500}
                   height={500}
                   className=" h-16 object-cover cursor-pointer"

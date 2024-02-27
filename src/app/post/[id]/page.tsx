@@ -78,7 +78,7 @@ export default function Post({ params }: { params: { id: string } }) {
                 <CustomMapND
                   latitude={post?.location?.latitude}
                   longitude={post?.location?.longitude}
-                  post={post? [post]: []}
+                  post={post ? [post] : []}
                 />
               </div>
             </div>
@@ -114,7 +114,7 @@ export default function Post({ params }: { params: { id: string } }) {
               <ChatPost />
             </div>
           ),
-        }
+        },
       ]);
     }
   }, [post]);
@@ -162,7 +162,10 @@ export default function Post({ params }: { params: { id: string } }) {
                             controls
                             preload="metadata"
                           >
-                            <source src={`/files/${item}`} type={`video/${item.split('.').pop()}`}/>
+                            <source
+                              src={`/files/${item}`}
+                              type={`video/${item.split(".").pop()}`}
+                            />
                           </video>
                         </div>
                       )}
@@ -170,8 +173,8 @@ export default function Post({ params }: { params: { id: string } }) {
 
                     {post && post?.files.length > 1 && (
                       <div className="absolute top-4 right-4 text-base px-3 py-1 rounded-full text-white bg-[#0005]">{`${
-                        post.files.length
-                      }/${1}`}</div>
+                        index + 1
+                      }/${post.files.length}`}</div>
                     )}
                   </div>
                 );

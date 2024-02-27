@@ -13,7 +13,7 @@ const locationSchema = new Schema({
 interface IPost extends Document {
   title: string;
   content: string;
-  category: string;
+  category: string[];
   activated: boolean;
   district: string;
   location: typeof locationSchema; // Sử dụng schema location đã được định nghĩa
@@ -25,7 +25,7 @@ interface IPost extends Document {
 const postSchema: Schema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
-  category: { type: String },
+  category: [String],
   activated: { type: Boolean, default: false },
   files: [String],
   location: { type: locationSchema, required: true },
