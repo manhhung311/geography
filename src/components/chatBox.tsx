@@ -11,14 +11,14 @@ type Message = {
   type: TypeMessage;
 };
 
-export default function ChatBox({ openClick }: { openClick?: boolean }) {
+export default function ChatBox({ openClick, field }: { openClick?: boolean; field?: string }) {
   const [input, setInput] = useState<string>("");
   const [listMessage, setListMessage] = useState<Array<Message>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const callAPI = async () => {
     const inputQuestion = input;
-    const question = `${input}. Hãy giới hạn trong các lĩnh vực lịch sử, Giáo dục, Lễ Hội, Làng nghề, Văn học, Âm nhạc, Mĩ thuật, Du lịch, Kinh tế, Chính trị`;
+    const question = `${input}`;
     setLoading(true);
     try {
       const api = await fetch(`/api/chats`, {
@@ -26,7 +26,7 @@ export default function ChatBox({ openClick }: { openClick?: boolean }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ input: question }),
+        body: JSON.stringify({ input: question, field }),
         credentials: "include",
       });
       const res = await api.json();

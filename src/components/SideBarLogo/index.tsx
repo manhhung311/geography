@@ -8,8 +8,8 @@ const SideBarLogo = ({ collapsed, className }: { collapsed?: boolean; className?
     return (
       <Link href={'/'} className={className ?? ''}>
         <Image
-          src={'/logo.webp'}
-          alt="/logo.webp"
+          src={'/logo.png'}
+          alt="/logo.png"
           width={48}
           height={48}
         />
@@ -20,8 +20,8 @@ const SideBarLogo = ({ collapsed, className }: { collapsed?: boolean; className?
   return (
     <Link href={'/'} className={className ?? ''}>
       <Image
-        src={'/logo.webp'}
-        alt="/logo.webp"
+        src={'/logo.png'}
+        alt="/logo.png"
         width={212}
         height={32}
       />

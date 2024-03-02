@@ -43,7 +43,7 @@ export default function Register() {
       <div className=" bg-white sm:h-3/4 sm:w-1/4 w-full h-full rounded-xl shadow-2xl flex flex-col  items-center gap-4">
         <div className="h-1/2 flex items-center justify-center">
           <Image
-            src={"/logo.webp"}
+            src={"/logo.png"}
             width={500}
             height={500}
             className=" w-32 h-32 object-cover rounded-full"
@@ -63,7 +63,7 @@ export default function Register() {
         </div>
         <div className=" w-4/5 flex flex-col">
           <label htmlFor="username" className=" text-black font-semibold">
-            Tài Khoản
+            Địa chỉ email
           </label>
           <input
             type={"email"}

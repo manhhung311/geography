@@ -56,6 +56,11 @@ export default function TopMenu({ openChatGpt }: { openChatGpt: () => void }) {
             >
               <Link href="/exercises">Bài tập</Link>
             </li>
+            <li
+              className={"menuItem border-2 border-yellow-200 rounded-lg p-2"}
+            >
+              <Link href="/hdsd.pdf">Hướng Dẫn Sử Dụng</Link>
+            </li>
           </ul>
         </nav>
       </div>

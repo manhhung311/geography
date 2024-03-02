@@ -93,7 +93,7 @@ export default function Search() {
             ))}
           </Row>
         </div>
-        <ChatBox openClick={openChatGpt} />
+        <ChatBox openClick={openChatGpt} field={query || ""}/>
       </div>
     </div>
   );

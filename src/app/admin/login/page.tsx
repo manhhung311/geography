@@ -49,7 +49,7 @@ export default function Login() {
       <div className=" bg-white sm:h-2/3 sm:w-1/4 h-full w-full rounded-xl shadow-2xl flex flex-col  items-center gap-5">
         <div className="h-1/2 flex items-center justify-center">
           <Image
-            src={"/logo.webp"}
+            src={"/logo.png"}
             width={500}
             height={500}
             className=" w-32 h-32 object-cover rounded-full"

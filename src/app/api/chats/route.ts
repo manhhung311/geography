@@ -7,8 +7,12 @@ export async function POST(req: Request) {
       dangerouslyAllowBrowser: true,
     });
     const body = await req.json();
-    const { input } = body as any;
-    const question = `${input}. Hãy giới hạn trong các lĩnh vực lịch sử, Giáo dục, Lễ Hội, Làng nghề, Văn học, Âm nhạc, Mĩ thuật, Du lịch, Kinh tế, Chính trị`;
+    const { input, field } = body as any;
+    const question = `${input} ${
+      field && field.trim() !== ""
+        ? `. Hãy giới hạn trong lĩnh vực ${field}`
+        : ""
+    }`;
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
@@ -18,9 +22,11 @@ export async function POST(req: Request) {
         },
       ],
     });
-    return NextResponse.json({content: completion.choices[0].message.content})
+    return NextResponse.json({
+      content: completion.choices[0].message.content,
+    });
   } catch (error) {
     console.error("Error calling ChatGPT API:", error);
-    return NextResponse.json({content: "Đã xảy ra lỗi"})
+    return NextResponse.json({ content: "Đã xảy ra lỗi" });
   }
 }

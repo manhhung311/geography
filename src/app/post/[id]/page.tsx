@@ -111,7 +111,7 @@ export default function Post({ params }: { params: { id: string } }) {
           key: "4",
           children: (
             <div className=" w-full h-screen">
-              <ChatPost />
+              <ChatPost field={post.title || ""}/>
             </div>
           ),
         },
@@ -160,10 +160,10 @@ export default function Post({ params }: { params: { id: string } }) {
                             autoPlay={false}
                             className="h-full object-cover"
                             controls
-                            preload="metadata"
+                            preload="auto"
                           >
                             <source
-                              src={`/files/${item}`}
+                              src={`/videos/${item}`}
                               type={`video/${item.split(".").pop()}`}
                             />
                           </video>
@@ -198,7 +198,7 @@ export default function Post({ params }: { params: { id: string } }) {
             items={item}
           />
         </div>
-        <ChatBox openClick={openChatGpt} />
+        <ChatBox openClick={openChatGpt} field={post?.title || ""}/>
       </div>
     </div>
   );

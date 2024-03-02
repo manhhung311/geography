@@ -54,7 +54,7 @@ export default function Category({ params }: { params: { id: string } }) {
         <div className=" h-full w-10/12">
           <CustomMapND post={post} longitude={longitude} latitude={latitude} />
         </div>
-        <ChatBox openClick={openChatGpt} />
+        <ChatBox openClick={openChatGpt} field={params.id||""} />
       </div>
     </div>
   );

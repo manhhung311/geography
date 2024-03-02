@@ -23,7 +23,7 @@ const Cards = ({ post, select }: { post?: Post; select: (id: number) => void }) 
                   key={index}
                   autoPlay={false}
                   className=" w-1/3 h-full object-cover"
-                  src={`/files/${item}`}
+                  src={`/videos/${item}`}
                   onClick={()=>{select(index)}}
                 />
               );
