@@ -77,7 +77,7 @@ export default function PostForm({
   }, []);
 
   const [selectCategory, setSelectCategory] = useState<string[]>();
-  const [selectField, setSelectField] = useState<String>("");
+  const [selectField, setSelectField] = useState<String[]>();
   const title = Form.useWatch("title", feedbackForm);
   const exercise = Form.useWatch("exercise", feedbackForm);
   const handleEditorChange = (event: any, editor: any) => {
@@ -162,9 +162,6 @@ export default function PostForm({
       label: (
         <div
           className="flex items-center justify-start gap-1"
-          onClick={() => {
-            setSelectField(item.id);
-          }}
         >
           <div className="col-span-2">{item.name}</div>
         </div>
@@ -192,6 +189,10 @@ export default function PostForm({
 
   const handleChangeCategory = (value: string[])=> {
     setSelectCategory(value);
+  }
+
+  const handleChangeDistricts = (value: string[])=> {
+    setSelectField(value);
   }
   return (
     <Form className="p-4" form={feedbackForm} onFinish={handleSubmitForm}>
@@ -242,7 +243,6 @@ export default function PostForm({
             options={optionsCategory}
             mode="multiple"
             placeholder="Lựa chọn danh mục"
-            defaultValue={["china"]}
             optionLabelProp="label"
             onChange={handleChangeCategory}
           ></Select>
@@ -251,7 +251,8 @@ export default function PostForm({
       <div className="grid gap-2">
         <Subtitle title={"Huyện"} required={true} />
         <Form.Item name={"field"}>
-          <Select size="large" style={{ width: "100%" }} options={options} />
+          <Select size="large" style={{ width: "100%" }} mode="multiple" optionLabelProp="label" options={options}
+          onChange={handleChangeDistricts} />
         </Form.Item>
       </div>
       <div className="grid gap-2">

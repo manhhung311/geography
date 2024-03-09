@@ -53,7 +53,7 @@ export async function GET(request: Request) {
   const post =
     select && field
       ? await PostModel.find({
-          district: select.trim(),
+          district: {$all: [select.trim()]},
           category: { $all: [field.trim()] },
           activated: true
         })
