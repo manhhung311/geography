@@ -61,8 +61,8 @@ const sendMail = async (email: string, link: string) => {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     auth: {
-      user: 'vumanhhung310198@gmail.com',
-      pass: 'oqzjotojotnjsdmw',
+      user: 'tulieusogddpnamdinh@gmail.com',
+      pass: 'afsbbsxcezccfdhm',
     },
   });
 

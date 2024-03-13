@@ -19,7 +19,7 @@ function Pin({id, size = 40, image }: {id: string; size: number; image: string})
       <div className=" p-3 bg-white rounded-xl " onClick={()=> {console.log("id ", id)}}>
         <img
           src={image}
-          className=" w-44 h-44"
+          className=" w-32 h-32"
           width={30}
           height={30}
           onClick = {()=> {
