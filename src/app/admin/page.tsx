@@ -54,7 +54,7 @@ export default function Home() {
     <>
       {login ? (
         <div className=" w-screen h-screen overflow-hidden bg-white text-black">
-          <div className="w-full flex justify-between h-">
+          <div className="w-full flex justify-between">
             <div className=" w-2/12 flex justify-center items-center">
               <Tooltip placement="top" title={"Về Trang Chủ"}>
                 <Image
@@ -67,7 +67,8 @@ export default function Home() {
                 />
               </Tooltip>
             </div>
-            <div className=" h-full p-5">
+            <div className=" w-10/12 h-full p-5 flex justify-between">
+              <a href={`${process.env.NEXT_PUBLIC_HOST}/home`} className=" cursor-pointer text-blue-500">Trang chủ</a>
               <Dropdown overlay={userMenu} trigger={["click"]}>
                 <div className=" border-0 border-none">
                   <Avatar

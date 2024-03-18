@@ -34,14 +34,14 @@ export default function Category({ params }: { params: { id: string } }) {
   };
   return (
     <div className="w-screen h-screen bg-white">
-      <div className=" h-72 w-full bg-white overflow-hidden">
+      <div className=" h-1/3 w-full bg-white overflow-hidden">
         <TopMenu
           openChatGpt={() => {
             setOpenChatGpt(!openChatGpt);
           }}
         />
       </div>
-      <div className=" flex w-full h-screen bg-white">
+      <div className=" h-2/3 flex w-full bg-white">
         <div className="flex flex-col gap-3 w-2/12 h-full">
           <div className=" justify-center items-center flex text-black font-extrabold text-2xl">
             <span>{JSCategory.data.find(item=> item.id === params.id)?.name || "Đường dẫn không hợp lệ"}</span>

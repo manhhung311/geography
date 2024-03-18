@@ -18,9 +18,9 @@ const NamDinhMap = ({
   const [viewport, setViewport] = useState({
     width: "100%",
     height: 400,
-    latitude: latitude || 20.4388, // Vĩ độ trung tâm của Nam Định
-    longitude: longitude || 106.1621, // Kinh độ trung tâm của Nam Định
-    zoom: 13,
+    latitude: latitude || 20.299334679045955, // Vĩ độ trung tâm của Nam Định
+    longitude: longitude || 106.18893648028525, // Kinh độ trung tâm của Nam Định
+    zoom: 1,
   });
 
   const [landmarks, setLandmarks] = useState<any[]>();
@@ -45,9 +45,9 @@ const NamDinhMap = ({
     setViewport({
       width: "100%",
       height: 400,
-      latitude: latitude || 20.4388, // Vĩ độ trung tâm của Nam Định
-      longitude: longitude || 106.1621, // Kinh độ trung tâm của Nam Định
-      zoom: 11,
+      latitude: latitude || 20.299334679045955, // Vĩ độ trung tâm của Nam Định
+      longitude: longitude || 106.18893648028525, // Kinh độ trung tâm của Nam Định
+      zoom: 10,
     });
   }, [longitude, latitude]);
 
